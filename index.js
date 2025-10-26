@@ -19,9 +19,7 @@ app.post("/contact", (req, res) => {
   return res.redirect("/invalid.html");
 });
 
-app.get("/messages", (_, res) => {
-  res.json(messages);
-});
+app.get("/messages", (_, res) => res.json(messages));
 
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");

@@ -22,11 +22,16 @@
       }
 
       (async () => {
-        const res = await fetch("/messages");
-        const data = await res.json();
-        data.forEach((el) => {
-          addMessage(el.email, el.message);
-        });
+        try {
+          const res = await fetch("/messages");
+          if (!res.ok) throw new Error("Failed to fetch messages");
+          const data = await res.json();
+          data.forEach((el) => {
+            addMessage(el.email, el.message);
+          });
+        } catch (error) {
+          alert("Error fetching messages: " + error);
+        }
       })();
     </script>
   </body>
