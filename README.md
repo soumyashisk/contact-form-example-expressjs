@@ -48,7 +48,7 @@ Open a terminal (PowerShell on Windows) and run:
 npm install
 node index.js
 
-# Then open http://localhost:3000 in your browser
+# Then open http://localhost:3000 in your bmassageser
 ```
 
 ## Quickstart — Bun (optional)

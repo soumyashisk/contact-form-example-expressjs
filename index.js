@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import Database from "better-sqlite3";
 
 const app = express();
 
@@ -13,19 +14,36 @@ app.use(
   })
 );
 
-const messages = [];
+// database
+const db = new Database("foobar.db");
+db.pragma("journal_mode = WAL");
+
+db.exec(`
+CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL,
+    message TEXT NOT NULL
+);
+`);
+const insert = db.prepare(
+  "INSERT INTO messages (email, message) VALUES (?, ?)"
+);
+const selectAll = db.prepare("SELECT * FROM messages ORDER BY id ASC");
 
 // routes
 app.post("/contact", (req, res) => {
   const emailRegex = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm;
   if (emailRegex.test(req.body.email) && req.body.message) {
-    messages.push(req.body);
+    insert.run(req.body.email, req.body.message);
     return res.redirect("/thankyou.html");
   }
   return res.redirect("/invalid.html");
 });
 
-app.get("/messages", (_, res) => res.json(messages));
+app.get("/messages", (_, res) => {
+  const messages = selectAll.all();
+  res.json(messages);
+});
 
 app.get("/messages/:index", (req, res) => {
   const i = req.params.index;
