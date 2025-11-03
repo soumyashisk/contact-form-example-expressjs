@@ -17,8 +17,8 @@
 
     <script>
       const listGroup = document.querySelector(".list-group");
-      function addMessage(email, message) {
-        listGroup.innerHTML += `<li class="list-group-item mb-2"><b>${email}:</b> ${message}</li>`;
+      function addMessage(id, email, message) {
+        listGroup.innerHTML += `<a href="/message.html?id=${id}"><li class="list-group-item mb-2"><b>${email}:</b> ${message}</li></a>`;
       }
 
       (async () => {
@@ -27,7 +27,7 @@
           if (!res.ok) throw new Error("Failed to fetch messages");
           const data = await res.json();
           data.forEach((el) => {
-            addMessage(el.email, el.message);
+            addMessage(el.id, el.email, el.message);
           });
         } catch (error) {
           alert("Error fetching messages: " + error);
