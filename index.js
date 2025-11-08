@@ -4,7 +4,6 @@ import Database from "better-sqlite3";
 
 const app = express();
 
-// middlewares
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -60,8 +59,20 @@ app.get("/messages/:index", (req, res) => {
     response.error = "Index must be a positive or zero";
   } else {
     response.data = db.prepare("SELECT * FROM messages WHERE id = ?").get(i);
+
+    if (!response.data) {
+      response.data = null;
+      response.error = "The message at the given index does not exist";
+    }
   }
   return res.json(response);
+});
+
+app.delete("/messages/:id", (req, res) => {
+  const result = db
+    .prepare("DELETE FROM messages WHERE id = ?")
+    .run(req.params.id);
+  return res.json({ success: result.changes > 0 });
 });
 
 app.listen(3000, () => {
