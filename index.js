@@ -23,12 +23,13 @@ CREATE TABLE IF NOT EXISTS messages (
     message TEXT NOT NULL
 );
 `);
+
 const insert = db.prepare(
   "INSERT INTO messages (email, message) VALUES (?, ?)"
 );
+
 const selectAll = db.prepare("SELECT * FROM messages ORDER BY id ASC");
 
-// routes
 app.post("/contact", (req, res) => {
   const emailRegex = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm;
   if (emailRegex.test(req.body.email) && req.body.message) {
@@ -43,22 +44,22 @@ app.get("/messages", (_, res) => {
   res.json(messages);
 });
 
-app.get("/messages/:index", (req, res) => {
-  const i = req.params.index;
+app.get("/messages/:id", (req, res) => {
+  const id = req.params.id;
   const messagesLength = db
     .prepare("SELECT COUNT(*) AS count FROM messages")
     .get().count;
   const response = { data: null, error: null };
   if (messagesLength === 0) {
     response.error = "There are no messages";
-  } else if (isNaN(Number(i))) {
-    response.error = "Index is not a number";
-  } else if (!Number.isInteger(Number(i))) {
-    response.error = "Index must be an integer";
-  } else if (!(i >= 0)) {
-    response.error = "Index must be a positive or zero";
+  } else if (isNaN(Number(id))) {
+    response.error = "The given id is not a number";
+  } else if (!Number.isInteger(Number(id))) {
+    response.error = "id must be an integer";
+  } else if (!(id >= 0)) {
+    response.error = "id must be a positive or zero";
   } else {
-    response.data = db.prepare("SELECT * FROM messages WHERE id = ?").get(i);
+    response.data = db.prepare("SELECT * FROM messages WHERE id = ?").get(id);
 
     if (!response.data) {
       response.data = null;
