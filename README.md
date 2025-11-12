@@ -7,7 +7,7 @@ A minimal contact form example built with Express.js that serves static HTML pag
 - Static contact form UI served from `public/index.html` (Bootstrap is used for quick styling)
 - POST `/contact` endpoint with basic email validation and redirect to success/failure pages
 - GET `/messages` endpoint that returns submitted messages as JSON
-- Messages are stored in an in-memory array (for demo / learning only)
+- Messages are stored in a sqlite db
 
 ## Tech stack
 
