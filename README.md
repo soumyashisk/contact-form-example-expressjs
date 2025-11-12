@@ -1,6 +1,4 @@
-(The file exists but is empty)
-
-# Contact Form Example — Express.js
+# Contact Form Example Express.js
 
 A minimal contact form example built with Express.js that serves static HTML pages from the `public/` folder and accepts form submissions. Submissions are stored in an in-memory array and can be viewed via a simple JSON endpoint. This project is intentionally small so it's easy to extend (add a DB, email delivery, validation, etc.).
 
